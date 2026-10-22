@@ -80,8 +80,7 @@ The chunks in this part are set to `eval = FALSE`: you run them **once**, line b
 ### Chunk 2.1 · Is Git installed and does RStudio find it?
 
 ```{r chunk_2_1, eval=FALSE}
-## Install the helper packages once
-install.packages(c("usethis", "gitcreds"))
+## Install the helper packages once install.packages(c("usethis", "gitcreds"))
 
 ## Health report of your Git/GitHub setup
 usethis::git_sitrep()
@@ -93,8 +92,8 @@ If Git is missing: **Windows** — install from <https://git-scm.com> (defaults 
 
 ```{r chunk_2_2, eval=FALSE}
 ## Use the e-mail address of your GitHub account
-usethis::use_git_config(user.name  = "Jane Doe",
-                        user.email = "jane.doe@campus.lmu.de")
+usethis::use_git_config(user.name  = "Pauline Jans",
+                        user.email = "pauline.jans@web.de")
 ```
 
 ### Chunk 2.3 · Give RStudio a key to GitHub (personal access token)
@@ -159,10 +158,32 @@ The assignment operator is the arrow `<-` (shortcut `Alt + -`). `=` also works b
 ### Chunk 3.1 · Calculator and assignment
 
 ```{r chunk_3_1}
+1+1
+5*(4-1)^2
+sqrt(log(10))
 ## Assign values to objects (no output)
-## Fun with floating point: Euler's identity e^(i*pi) + 1 = 0
+x <- 5
+X <- 6
+
+
+x
+x^2
+y <- 3
+(z <- y^x)
+
+## Fun with floating point: Euler's identity 
+## e^(i*pi) + 1 = 0
+
+i <- complex(real = 0, imaginary = 1)
+exp(pi * i) + 1
+
+round(exp(pi * i) + 1,10)
+
 ## Lesson: never test numbers with == after calculations, use all.equal()
 
+0.1 + 0.2 == 0.3
+
+isTRUE(all.equal(0.1 + 0.2, 0.3))
 
 ```
 
@@ -173,8 +194,21 @@ R works with objects: numbers, text, vectors, matrices, data frames, functions, 
 ### Chunk 3.2 · Data types
 
 ```{r chunk_3_2}
+number <- 42
+text <- "Ulimate Question of Life,the Universe, and Everything"
+logic <- TRUE
+integer <- 42L
+class(number)
+class(text)
+
 ## Conversion
+as.numeric(integer)
+as.integer(42.56)
+as.numeric("42.56")
+as.numeric("42,56")
+
 ## Delete an object
+rm(text)
 
 
 ```
@@ -192,7 +226,16 @@ R works with objects: numbers, text, vectors, matrices, data frames, functions, 
 | And                      | `a & b`  |
 
 ```{r chunk_3_3}
+munich <- 1510000
+espoo <- 320000
 
+munich>espoo
+
+munich == espoo
+munich != espoo
+
+(munich >1e6) & (espoo>1e6)
+(munich >1e6) | (espoo>1e6)
 
 ```
 
@@ -244,10 +287,30 @@ The simplest way to collect many values is a **vector**: `c(value1, value2, ...)
 ### Chunk 4.1 · Create vectors
 
 ```{r chunk_4_1}
+
+cities <- c("Munich", "Espoo", "Stockholm", "Mannheim", "Joensuu", "Vienna", "Shanghai")
+
+inhabitants <- c(1510000, 320000, 990000, 315000, 78000, 2000000, 24900000)
+
 ## Give the elements names
+names(inhabitants) <- cities
+inhabitants
 ## Vector functions
+length(cities)
+sum(inhabitants)/1e6 #in millions
+mean(inhabitants)
+median(inhabitants)
+
+sort(inhabitants, decreasing = TRUE)
+
 ## Special vectors
+
+rep("beer", 3)
+seq(2010,2014)
+
 ## Calculations work element by element
+
+inhabitants/1e6
 
 
 ```
@@ -255,6 +318,13 @@ The simplest way to collect many values is a **vector**: `c(value1, value2, ...)
 ### Chunk 4.2 · Indexing
 
 ```{r chunk_4_2}
+inhabitants [2] #by position
+inhabitants [2:4]
+inhabitants ["Vienna"]
+inhabitants [c("Munich","Shanghai")]
+inhabitants[-1]
+inhabitants [inhabitants<500000]
+
 
 
 ```
@@ -262,6 +332,8 @@ The simplest way to collect many values is a **vector**: `c(value1, value2, ...)
 **Task A1:** Which of "your" cities have more than 1 million inhabitants? How many are they?
 
 ```{r task_A1}
+inhabitants [inhabitants>1000000]
+
 
 
 ```
@@ -276,7 +348,9 @@ A **factor** maps labels to an underlying integer code. Factors are useful for c
 ### Chunk 4.3 · Factors
 
 ```{r chunk_4_3}
+country <- factor(c("Germany","Finland","Sweden","Germany","Finland","Austria","China"))
 
+country
 
 ```
 
@@ -287,7 +361,16 @@ A **factor** maps labels to an underlying integer code. Factors are useful for c
 ### Chunk 4.4 · Matrices
 
 ```{r chunk_4_4}
+students_n <- c(8,1,1,1,1,1,1)
+
+m <- cbind(inhabitants,students=students_n)
+m
+class(m[,"inhabitants"])
+
 ## Add a text column: is the city at the sea?
+m2 <- cbind(m,sea = c("NO","YES","YES","NO","NO","YES"))
+m2
+
 ## Add a row
 ## Indexing: first row, then column
 
@@ -308,7 +391,17 @@ A **list** is a bag that can hold any objects of any length and type.
 ### Chunk 4.5 · Lists
 
 ```{r chunk_4_5}
-
+party <- list(
+  title = "Empirical Research course party",
+  cities = cities,
+  drinks = c(Munich = "helles beer",
+             Espoo = "Lonkero",
+             Stockholm = "Akvavit",
+             Mannheim = "Riesling Schorle",
+             Joensuu = "Koskenkorva",
+             Vienna = "Spritzer",
+             Shanghai = "Huangjiu")
+)
 
 ```
 
