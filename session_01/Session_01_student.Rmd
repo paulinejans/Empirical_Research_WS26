@@ -339,6 +339,14 @@ inhabitants [inhabitants>1000000]
 ```
 
 **Task A2 (verification):** Look up the population of *one* city in an official source (e.g., the statistical office of the country). Is our rounded number close enough? What exactly is counted — city proper or metropolitan area?
+```{r}
+Munich_rounded <- 1500000
+Munich_official <- 1612000
+difference <- Munich_rounded - Munich_official
+difference_pct <- difference / Munich_official * 100
+difference
+difference_pct
+```
 
 
 ## Factors
@@ -380,7 +388,7 @@ m2
 **Task B:** Run `sum(m2[, "inhabitants"])`. What happens and why? How could you have noticed **before** the error?
 
 ```{r task_B, error=TRUE}
-
+sum(m2[, "inhabitants"])
 
 ```
 
